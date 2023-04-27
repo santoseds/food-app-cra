@@ -1,38 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Button, Form, Container, Row } from 'react-bootstrap';
+
 import foods from '../models/foods';
 import Food from './Food';
 
-import Button from 'react-bootstrap/Button';
-
-class Pessoa {}
-
 const Main = () => {
-  let quantidade = 0;
-  return (
-    <main>
-      <h1>Menu</h1>
-      {/* Classe button adicionado no botão HTML. */}
-      <button type="button" className="btn btn-primary">
-        Cadastrar Raiz
-      </button>
+  let [nome, setNome] = useState('');
 
-      {/* Component Button do bootstrap. */}
-      <Button
-        onClick={(event) => {
-          console.log('Clicou: ' + quantidade++);
-        }}
-        variant="primary"
-      >
-        Cadastrar Nutela
-      </Button>
-      <section>
-        <div>
+  const handleClick = (event) => {
+    console.log('Clicou!');
+  };
+
+  const handleChange = (event) => {
+    console.log('Digitou alguma coisa!');
+  };
+
+  return (
+    <Container>
+      <main>
+        <h1>Menu</h1>
+        {/* Component Button do bootstrap. */}
+        <Form.Group className="mb-3">
+          <Form.Label>Alimento</Form.Label>
+          <Form.Control type="text" placeholder="Café" />
+
+          <input type="text" onChange={handleChange} />
+        </Form.Group>
+        <Button onClick={handleClick} variant="primary">
+          Pesquisar
+        </Button>
+        <Row className="my-2">
           {foods.map((food) => (
             <Food food={food}></Food>
           ))}
-        </div>
-      </section>
-    </main>
+        </Row>
+      </main>
+    </Container>
   );
 };
 

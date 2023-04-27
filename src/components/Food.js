@@ -1,17 +1,20 @@
 import React from 'react';
 
+import { Col, Card } from 'react-bootstrap';
+
 const Food = ({ food }) => {
   return (
-    <div>
-      <div className="card">
-        <div className="card-header text-center font-weight-bold">
-          <span>{food.name}</span>
-        </div>
-        <div className="card-body p-0">
-          <img src={food.image} alt={food.name} className="w-100" />
-        </div>
-      </div>
-    </div>
+    <Col sm="12" md="6" lg="4" xl="3">
+      <Card>
+        <Card.Header className="text-center font-weight-bold">
+          {food.name}
+        </Card.Header>
+
+        <Card.Img variant="bottom" src={food.image} className="w-100" />
+
+        <Card.Body className="p-0"></Card.Body>
+      </Card>
+    </Col>
   );
 };
 
