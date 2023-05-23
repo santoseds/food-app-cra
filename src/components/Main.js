@@ -10,17 +10,29 @@ const Main = () => {
 
   let buttonAdd = useRef(null);
 
-  const handleClick = (event) => {};
+  const handleClick = (event) => {
+    fetch('http://localhost:4000/comidas', { method: 'GET' })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => setFoods([...data]))
+      .catch((error) => {
+        console.log('Sem dados!');
+      })
+      .catch((error) => {
+        console.log('Não teve sucesso na conexão!');
+      });
+  };
 
   const handleChange = (event) => {
     setNome(event.target.value);
   };
 
   useEffect(() => {
-    fetch('http://localhost:4000/comidas', { method: 'GET' })
-      .then((response) => response.json())
-      .then((data) => setFoods([...data]))
-      .catch((error) => {});
+    // fetch('http://localhost:4000/comidas', { method: 'GET' })
+    //   .then((response) => response.json())
+    //   .then((data) => setFoods([...data]))
+    //   .catch((error) => {});
   }, []);
 
   return (
