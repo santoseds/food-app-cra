@@ -1,4 +1,3 @@
-//Teste de atualização.
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form, Container, Row } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
@@ -16,7 +15,7 @@ const Main = () => {
 
   // let [nome, setNome] = useState('');
   // let [imagem, setImagem] = useState('');
-  let [food, setFood] = useState({ nome: '', imagem: '', descricao: '' });
+  let [food, setFood] = useState({ name: '', image: '' });
 
   let buttonAdd = useRef(null);
 
@@ -37,19 +36,33 @@ const Main = () => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:4000/comidas', { method: 'GET' })
-      .then((response) => response.json())
-      .then((data) => setFoods([...data]))
-      .catch((error) => {});
+    fetch('http://localhost:4000/foods')
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setFoods([...data]);
+      })
+      .catch();
   }, []);
 
   const handleChange = (event) => {
     setFood({ ...food, [event.target.name]: event.target.value });
   };
 
-  useEffect(() => {
+  const handleOnSubmit = (event) => {
+    event.preventDefault();
+    // Enviar os dados para o servidor backend.
     console.log(food);
-  }, [food]);
+    fetch('http://localhost:4000/foods', {
+      method: 'POST',
+      body: JSON.stringify(food),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    // Atualizar a lista dos itens do cardápio.
+  };
 
   return (
     <main>
@@ -69,12 +82,7 @@ const Main = () => {
         {/* Component Button do bootstrap. */}
         <Form.Group className="mb-3">
           <Form.Label>Alimento</Form.Label>
-          {/* <Form.Control
-            type="text"
-            placeholder="Café"
-            onChange={handleChange}
-            value={nome}
-          /> */}
+          <Form.Control type="text" placeholder="Café" />
         </Form.Group>
 
         <Button onClick={handleClick} variant="primary">
@@ -86,21 +94,21 @@ const Main = () => {
             <Food key={food.id} food={food}></Food>
           ))}
         </Row>
-        {show}
+
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Cadastro de Comida</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <Form>
+          <Form onSubmit={handleOnSubmit}>
+            <Modal.Body>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Nome</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Nome"
-                  name="nome"
+                  name="name"
                   onChange={handleChange}
-                  value={food.nome}
+                  value={food.name}
                 />
               </Form.Group>
 
@@ -109,21 +117,21 @@ const Main = () => {
                 <Form.Control
                   type="text"
                   placeholder="Imagem"
-                  name="imagem"
+                  name="image"
                   onChange={handleChange}
-                  value={food.imagem}
+                  value={food.image}
                 />
               </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Fechar
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Salvar
-            </Button>
-          </Modal.Footer>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Fechar
+              </Button>
+              <Button type="submit" variant="primary" onClick={handleClose}>
+                Salvar
+              </Button>
+            </Modal.Footer>
+          </Form>
         </Modal>
       </Container>
     </main>
