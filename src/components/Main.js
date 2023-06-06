@@ -7,15 +7,14 @@ import Food from './Food';
 
 const Main = () => {
   let [foods, setFoods] = useState([]);
+  let [food, setFood] = useState({ name: '', image: '' });
+
+  let [nome, setNome] = useState('');
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  // let [nome, setNome] = useState('');
-  // let [imagem, setImagem] = useState('');
-  let [food, setFood] = useState({ name: '', image: '' });
 
   let buttonAdd = useRef(null);
 
@@ -50,17 +49,31 @@ const Main = () => {
     setFood({ ...food, [event.target.name]: event.target.value });
   };
 
+  const nomeHandleChange = (event) => {
+    setNome(event.target.value);
+  };
+
   const handleOnSubmit = (event) => {
     event.preventDefault();
     // Enviar os dados para o servidor backend.
-    console.log(food);
     fetch('http://localhost:4000/foods', {
-      method: 'POST',
-      body: JSON.stringify(food),
+      method: 'POST', // Método de envio.
+      body: JSON.stringify(food), // Converte o Json em string
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json', // Especifica o tipo do conteúdo da requisição.
       },
-    });
+    })
+      .then((response) => {
+        if (response.ok == true) {
+          // Fechar modal.
+          setShow(false);
+          return response.json();
+        }
+      })
+      .then((data) => {
+        setFoods([...foods, data]);
+      })
+      .catch((error) => {});
     // Atualizar a lista dos itens do cardápio.
   };
 
@@ -82,7 +95,12 @@ const Main = () => {
         {/* Component Button do bootstrap. */}
         <Form.Group className="mb-3">
           <Form.Label>Alimento</Form.Label>
-          <Form.Control type="text" placeholder="Café" />
+          <Form.Control
+            type="text"
+            placeholder="Café"
+            value={nome}
+            onChange={nomeHandleChange}
+          />
         </Form.Group>
 
         <Button onClick={handleClick} variant="primary">
@@ -122,12 +140,24 @@ const Main = () => {
                   value={food.image}
                 />
               </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Descrição</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  type="text"
+                  placeholder="Descrição"
+                  name="description"
+                  onChange={handleChange}
+                  value={food.description}
+                />
+              </Form.Group>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 Fechar
               </Button>
-              <Button type="submit" variant="primary" onClick={handleClose}>
+              <Button type="submit" variant="primary">
                 Salvar
               </Button>
             </Modal.Footer>
