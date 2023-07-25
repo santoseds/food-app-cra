@@ -1,3 +1,20 @@
+Create a db.json file with
+
+{
+"clientes":[],
+"foods":[]
+}
+
+
+Start JSON Server
+
+json-server --watch db.json -p 4000
+
+go to http://localhost:4000/foods/
+go to http://localhost:4000/clientes/
+
+In the React project directory, you can run: npm install npm start
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
