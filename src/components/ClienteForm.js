@@ -29,7 +29,7 @@ export function ClienteForm({showClienteForm, toggleClienteForm, setClientes}){
   
     const { Formik } = formik;
     const schema = yup.object().shape({
-        nome: yup.string().required('Preencher campo').typeError('Escrever texto').min(2, 'Utilizar duas letras no mínimo'),
+        nome: yup.string().matches(/^[aA-zZ\s]+$/, "Utilizar letras").required('Preencher campo').typeError('Escrever texto').min(2, 'Utilizar duas letras no mínimo'),
         email: yup.string().email().required('Preencher campo'),
         nascimento: yup.date().required('Preencher campo'),
         cep: yup.string().trim().matches(/^[0-9]{2}\.[0-9]{3}-[0-9]{3}$/, 'CEP inválido').required('Preencher campo')

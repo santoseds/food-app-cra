@@ -4,13 +4,18 @@ import { Button, Form, Container, Row } from 'react-bootstrap';
 //import foods from '../models/foods';
 import Food from './Food';
 import FoodForm from './FoodForm';
+import { ClienteForm } from './ClienteForm';
 
 const Main = () => {
   let [foods, setFoods] = useState([]);
+  let [clientes, setClientes] = useState([]);
+
 
   let [nome, setNome] = useState('');
 
   const [show, setShow] = useState(false);
+  const[showClienteForm, setShowClienteForm] = useState(false);
+  const toggleClienteForm=()=>{setShowClienteForm(!showClienteForm)};
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -60,7 +65,7 @@ const Main = () => {
             ref={buttonAdd}
           >
             + | Adicionar Preparação
-          </Button>
+          </Button>{' '}<Button variant="outline-primary" onClick={toggleClienteForm}>Adicionar Cliente</Button>
         </div>
 
         {/* Component Button do bootstrap. */}
@@ -90,6 +95,11 @@ const Main = () => {
           foods={foods}
           setFoods={setFoods}
         ></FoodForm>
+        <ClienteForm 
+          showClienteForm={showClienteForm}
+          toggleClienteForm = {toggleClienteForm}
+          setClientes = {setClientes}
+          ></ClienteForm>
       </Container>
     </main>
   );
